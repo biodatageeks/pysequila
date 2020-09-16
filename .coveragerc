@@ -1,0 +1,5 @@
+[run]
+include =
+    pysequila/*
+omit =
+    pysequila/tests/*
