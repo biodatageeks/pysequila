@@ -1,0 +1,96 @@
+stages:
+  - version
+  - build
+  - publish
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  VERSION_FILE: version.sh
+  GIT_DEPTH: 500
+
+
+.python37Vars: &python37Vars
+  PYTHON_VERSION: "3.7"
+
+.python38Vars: &python38Vars
+  PYTHON_VERSION: "3.8"
+
+# --------------------------------- STAGE: version ---------------------------------------------------------------------
+version-branch:
+  stage: version
+  image:
+    name: mdomke/git-semver:v4.0.1
+    entrypoint: [""]
+  script:
+    - cd /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME && git-semver --format x.y.z+m | sed -e 's/$/-SNAPSHOT/g' | xargs -I {} echo "export VERSION={}" > $VERSION_FILE
+    - cat $VERSION_FILE
+  artifacts:
+    paths:
+      - $VERSION_FILE
+  tags: [ docker ]
+  except: [ master, tags ]
+
+version-tag:
+  stage: version
+  image:
+    name: mdomke/git-semver:v4.0.1
+    entrypoint: [""]
+  script:
+    - cd /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME && git-semver --no-hash --no-pre | xargs -I {} echo "export VERSION={}" > $VERSION_FILE
+    - cat $VERSION_FILE
+  artifacts:
+    paths:
+      - $VERSION_FILE
+  tags: [ docker ]
+  only:
+    - tags
+  except:
+    - branches
+
+
+.build: &build
+  image: python:$PYTHON_VERSION
+  cache:
+    key: $CI_PROJECT_PATH
+    paths:
+      - "/root/.cache/"
+  before_script:
+    - source $VERSION_FILE
+    - pip install -U -r requirements.txt
+  script:
+    - python setup.py sdist bdist_wheel
+    - twine check dist/*
+  artifacts:
+    paths:
+      - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/dist/
+  tags: [ docker ]
+
+
+build-python37:
+  stage: build
+  variables:
+    <<: *python37Vars
+  <<: *build
+  except: [ master ]
+
+
+.publish: &publish
+  image: python:$PYTHON_VERSION
+  cache:
+    key: $CI_PROJECT_PATH
+    paths:
+      - "/root/.cache/"
+  before_script:
+    - source $VERSION_FILE
+    - pip install -U -r requirements.txt
+  script:
+    - twine upload --repository=zsibio dist/* --config-file=/root/pypi/.pypirc
+  tags: [ docker ]
+
+
+publish-python37:
+  stage: publish
+  variables:
+    <<: *python37Vars
+  <<: *publish
+  except: [ master, tags ]
