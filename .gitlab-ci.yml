@@ -1,19 +1,28 @@
 stages:
   - version
-  - build
-  - publish
+#  - build
+#  - publish
+  - testInJupyter
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   VERSION_FILE: version.sh
   GIT_DEPTH: 500
-
+  KIND_VERSION: 0.9.0
+  KUBERNETES_VERSION: 1.19.1
+  DOCKER_VERSION: 19.03.12
+  HELM_VERSION: 3.3.1
+  JUPYTER_VERSION: 0.9.1
 
 .python37Vars: &python37Vars
   PYTHON_VERSION: "3.7"
 
 .python38Vars: &python38Vars
   PYTHON_VERSION: "3.8"
+
+.dev1Vars: &dev1Vars
+  CLUSTER_NAME: "dev1"
+  JUPYTER_PORT: 8880
 
 # --------------------------------- STAGE: version ---------------------------------------------------------------------
 version-branch:
@@ -48,49 +57,83 @@ version-tag:
     - branches
 
 
-.build: &build
-  image: python:$PYTHON_VERSION
-  cache:
-    key: $CI_PROJECT_PATH
-    paths:
-      - "/root/.cache/"
+#.build: &build
+#  image: python:$PYTHON_VERSION
+#  cache:
+#    key: $CI_PROJECT_PATH
+#    paths:
+#      - "/root/.cache/"
+#  before_script:
+#    - source $VERSION_FILE
+#    - pip install -U -r requirements.txt
+#  script:
+#    - python setup.py sdist bdist_wheel
+#    - twine check dist/*
+#  artifacts:
+#    paths:
+#      - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/dist/
+#  tags: [ docker ]
+
+
+#build-python37:
+#  stage: build
+#  variables:
+#    <<: *python37Vars
+#  <<: *build
+#  except: [ master ]
+
+
+#.publish: &publish
+#  image: python:$PYTHON_VERSION
+#  cache:
+#    key: $CI_PROJECT_PATH
+#    paths:
+#      - "/root/.cache/"
+#  before_script:
+#    - source $VERSION_FILE
+#    - pip install -U -r requirements.txt
+#  script:
+#    - twine upload --repository=zsibio dist/* --config-file=/root/pypi/.pypirc
+#  tags: [ docker ]
+
+
+#publish-python37:
+#  stage: publish
+#  variables:
+#    <<: *python37Vars
+#  <<: *publish
+#  except: [ master, tags ]
+
+testInJupyterDev1:
+  stage: testInJupyter
+  image:
+    name: docker:$DOCKER_VERSION
+  variables:
+    <<: *dev1Vars
   before_script:
     - source $VERSION_FILE
-    - pip install -U -r requirements.txt
+    - apk --no-cache add curl git openssl bash
+    - curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v$KUBERNETES_VERSION/bin/linux/amd64/kubectl
+    - chmod +x kubectl
+    - mv kubectl /usr/local/bin/
+    - curl -Lo kind https://kind.sigs.k8s.io/dl/v$KIND_VERSION/kind-$(uname)-amd64
+    - chmod +x kind
+    - mv kind /usr/local/bin/
+    - wget -q https://get.helm.sh/helm-v$HELM_VERSION-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
+      && chmod +x /usr/local/bin/helm
+      && chmod g+rwx /root
+      && mkdir /config
+      && chmod g+rwx /config
+    - kind delete cluster --name $CLUSTER_NAME -q
+    - kind create cluster --name $CLUSTER_NAME --wait 180s --kubeconfig /tmp/config
+    - export KUBECONFIG="/tmp/config"
   script:
-    - python setup.py sdist bdist_wheel
-    - twine check dist/*
+    - kubectl get nodes --insecure-skip-tls-verify=true
+    - helm install jupyterhub jupyterhub/jupyterhub --version $JUPYTER_VERSION --set proxy.secretToken=asdfasdfasdf
+    - kubectl port-forward service/proxy-public $JUPYTER_PORT:80
   artifacts:
     paths:
-      - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/dist/
+      - /tmp/config
   tags: [ docker ]
-
-
-build-python37:
-  stage: build
-  variables:
-    <<: *python37Vars
-  <<: *build
-  except: [ master ]
-
-
-.publish: &publish
-  image: python:$PYTHON_VERSION
-  cache:
-    key: $CI_PROJECT_PATH
-    paths:
-      - "/root/.cache/"
-  before_script:
-    - source $VERSION_FILE
-    - pip install -U -r requirements.txt
-  script:
-    - twine upload --repository=zsibio dist/* --config-file=/root/pypi/.pypirc
-  tags: [ docker ]
-
-
-publish-python37:
-  stage: publish
-  variables:
-    <<: *python37Vars
-  <<: *publish
   except: [ master, tags ]
+  when: manual
