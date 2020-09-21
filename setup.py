@@ -59,13 +59,13 @@ if os.environ.get('READTHEDOCS', None):
     extras_require['reST'].append('recommonmark')
 
 setup(name='pysequila',
-      version=os.getenv('VERSION','0.1.0'),
+      version=os.getenv('VERSION', '0.1.0'),
       description='An SQL-based solution for large-scale genomic analysis',
       long_description=long_description,
       long_description_content_type='text/x-rst',
       author='biodatageeks',
       author_email='team@biodatageeks.org',
-      url='https://biodatageeks.org',
+      url='http://biodatageeks.org/sequila',
       classifiers=classifiers,
       packages=['pysequila'],
       data_files=[],
