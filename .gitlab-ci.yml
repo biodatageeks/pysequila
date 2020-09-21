@@ -129,6 +129,8 @@ testInJupyterDev1:
     - export KUBECONFIG="/tmp/config"
   script:
     - kubectl get nodes --insecure-skip-tls-verify=true
+    - helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
+    - helm repo update
     - helm install jupyterhub jupyterhub/jupyterhub --version $JUPYTER_VERSION --set proxy.secretToken=asdfasdfasdf
     - kubectl port-forward service/proxy-public $JUPYTER_PORT:80
   artifacts:
