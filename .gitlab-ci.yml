@@ -20,6 +20,12 @@ variables:
 .python38Vars: &python38Vars
   PYTHON_VERSION: "3.8"
 
+.publishSnapshotVar: &publishSnapshotVar
+  PYPI_REPO: "zsibio"
+
+.publishReleaseVar: &publishReleaseVar
+  PYPI_REPO: "pypi"
+
 .dev1Vars: &dev1Vars
   CLUSTER_NAME: "dev1"
   JUPYTER_PORT: 8881
@@ -101,16 +107,29 @@ build-python37:
     - source $VERSION_FILE
     - pip install -U -r requirements.txt
   script:
-    - twine upload --repository=zsibio dist/* --config-file=/root/pypi/.pypirc
+    - twine upload --repository=$PYPI_REPO dist/* --config-file=/root/pypi/.pypirc
   tags: [ docker ]
 
 
-publish-python37:
+publishSnapshotpython37:
   stage: publish
   variables:
     <<: *python37Vars
+    <<: *publishSnapshotVar
   <<: *publish
   except: [ master, tags ]
+
+publishReleasetpython37:
+  stage: publish
+  variables:
+    <<: *python37Vars
+    <<: *publishReleaseVar
+  <<: *publish
+  only:
+    - tags
+  except:
+    - branches
+  when: manual
 
 
 .testInJupyter: &testInJupyter
