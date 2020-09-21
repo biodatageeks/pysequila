@@ -15,8 +15,17 @@ def register(session: SparkSession):
     spark_session = session._jvm\
         .org.apache.spark.sql.SparkSession\
         .builder().enableHiveSupport().getOrCreate()
-    return spark_session
-    # seq_session = session._jvm  # pylint: disable=W0212
+
+    seq_session = session._jvm \
+        .org.apache.spark.sql \
+        .SequilaSession(spark_session)
+
+    session._jvm \
+        .org.biodatageeks.sequila.utils \
+        .SequilaRegister.register(seq_session)
+    session._jvm \
+        .org.biodatageeks.sequila.utils \
+        .UDFRegister.register(seq_session)
 
 
 class SequilaSession (SparkSession):
