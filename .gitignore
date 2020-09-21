@@ -9,5 +9,4 @@ dist/
 .coverage
 .cache
 htmlcov
-*requirement*.txt
 *.pickle
