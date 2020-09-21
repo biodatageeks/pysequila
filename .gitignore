@@ -10,3 +10,4 @@ dist/
 .cache
 htmlcov
 *.pickle
+.idea/
