@@ -41,7 +41,6 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
@@ -51,7 +50,7 @@ long_description = (
     read_content("README.rst") +
     read_content(os.path.join("docs/source", "CHANGELOG.rst")))
 
-requires = ['setuptools']
+requires = ['setuptools', 'typeguard==2.5.0', 'pyspark==2.4.3', 'findspark']
 
 extras_require = {
     'reST': ['Sphinx'],
@@ -61,7 +60,7 @@ if os.environ.get('READTHEDOCS', None):
 
 setup(name='pysequila',
       version=os.getenv('VERSION','0.1.0'),
-      description='##### ToDo: Rewrite me #####',
+      description='An SQL-based solution for large-scale genomic analysis',
       long_description=long_description,
       long_description_content_type='text/x-rst',
       author='biodatageeks',
