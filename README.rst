@@ -1,3 +1,20 @@
+|version| |python| |license| |contributors| |last_commit|
+
+.. |version| image:: https://badge.fury.io/py/pysequila.svg
+    :target: https://badge.fury.io/py/pysequila
+
+.. |python| image:: https://img.shields.io/badge/python-3.7-blue.svg
+    :alt: Python-3.7
+
+.. |license| image:: https://img.shields.io/badge/license-Apache%202.0-blue.svg
+    :alt: license
+
+.. |contributors| image:: https://img.shields.io/github/contributors/biodatageeks/pysequila
+    :alt: GitHub contributors
+
+.. |last_commit| image:: https://img.shields.io/github/commit-activity/m/biodatageeks/pysequila
+    :alt: GitHub commit activity
+
 ===========
  pysequila
 ===========
