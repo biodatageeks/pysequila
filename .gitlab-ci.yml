@@ -65,9 +65,6 @@ version-tag:
     paths:
       - $VERSION_FILE
   tags: [ docker ]
-  only:
-    - tags
-    - master
   except:
     - branches
 
