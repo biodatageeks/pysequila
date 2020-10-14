@@ -78,7 +78,6 @@ tox:
     paths:
       - "/root/.cache/"
   before_script:
-    - source $VERSION_FILE
     - pip install -U -r requirements.txt
   script:
     - tox
