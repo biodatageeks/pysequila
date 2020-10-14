@@ -1,8 +1,8 @@
 stages:
   - version
+  - tox
   - build
   - publish
-  - testInJupyter
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
@@ -70,6 +70,24 @@ version-tag:
   except:
     - branches
 
+tox:
+  variables:
+    <<: *python37Vars
+  stage: tox
+  image: python:$PYTHON_VERSION
+  cache:
+    key: $CI_PROJECT_PATH
+    paths:
+      - "/root/.cache/"
+  before_script:
+    - source $VERSION_FILE
+    - pip install -U -r requirements.txt
+  script:
+    - tox
+  artifacts:
+    paths:
+      - htmlcov/
+  tags: [ docker ]
 
 .build: &build
   image: python:$PYTHON_VERSION
@@ -130,59 +148,3 @@ publishReleasetpython37:
   except:
     - branches
   when: manual
-
-
-.testInJupyter: &testInJupyter
-  image:
-    name: docker:$DOCKER_VERSION
-  before_script:
-    - source $VERSION_FILE
-    - apk --no-cache add curl git openssl bash
-    - curl -Lo kubectl https://storage.googleapis.com/kubernetes-release/release/v$KUBERNETES_VERSION/bin/linux/amd64/kubectl
-    - chmod +x kubectl
-    - mv kubectl /usr/local/bin/
-    - curl -Lo kind https://kind.sigs.k8s.io/dl/v$KIND_VERSION/kind-$(uname)-amd64
-    - chmod +x kind
-    - mv kind /usr/local/bin/
-    - wget -q https://get.helm.sh/helm-v$HELM_VERSION-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
-      && chmod +x /usr/local/bin/helm
-      && chmod g+rwx /root
-      && mkdir /config
-      && chmod g+rwx /config
-    - kind delete cluster --name $CLUSTER_NAME -q
-    - kind create cluster --name $CLUSTER_NAME --wait 180s --kubeconfig /tmp/config
-    - export KUBECONFIG="/tmp/config"
-  script:
-    - kubectl get nodes --insecure-skip-tls-verify=true
-    - helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
-    - helm repo update
-    - helm install jupyterhub jupyterhub/jupyterhub --version $JUPYTER_VERSION
-      --set proxy.secretToken=asdfasdfasdf
-      --set singleuser.defaultUrl="/lab"
-    - kubectl wait --timeout=600s --for=condition=ready pod -l app=jupyterhub,component=proxy
-    - kubectl port-forward --address 0.0.0.0 service/proxy-public $JUPYTER_PORT:80
-    - sleep 43200
-  artifacts:
-    paths:
-      - /tmp/config
-  tags: [ docker ]
-  except: [ master, tags ]
-  when: manual
-
-testInJupyterDev1:
-  stage: testInJupyter
-  variables:
-    <<: *dev1Vars
-  <<: *testInJupyter
-
-testInJupyterDev2:
-  stage: testInJupyter
-  variables:
-    <<: *dev2Vars
-  <<: *testInJupyter
-
-testInJupyterDev3:
-  stage: testInJupyter
-  variables:
-    <<: *dev3Vars
-  <<: *testInJupyter
