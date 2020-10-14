@@ -3,3 +3,4 @@ findspark
 setuptools
 wheel
 twine
+tox
