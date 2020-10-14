@@ -71,18 +71,23 @@ version-tag:
     - branches
 
 tox:
+  variables:
+    <<: *python37Vars
   stage: tox
   image: python:$PYTHON_VERSION
-    cache:
-      key: $CI_PROJECT_PATH
-      paths:
-        - "/root/.cache/"
+  cache:
+    key: $CI_PROJECT_PATH
+    paths:
+      - "/root/.cache/"
   before_script:
     - source $VERSION_FILE
     - pip install -U -r requirements.txt
-    script:
+  script:
     - tox
-tags: [ docker ]
+  artifacts:
+    paths:
+      - htmlcov/
+  tags: [ docker ]
 
 .build: &build
   image: python:$PYTHON_VERSION
