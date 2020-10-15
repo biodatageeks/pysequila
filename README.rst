@@ -1,7 +1,10 @@
-|version| |build| |python| |license| |coverage| |contributors| |last_commit|
+|version| |version_sequila| |build| |python| |license| |coverage| |contributors| |last_commit|
 
 .. |version| image:: https://badge.fury.io/py/pysequila.svg
     :target: https://badge.fury.io/py/pysequila
+
+.. |version_sequila| image:: https://img.shields.io/maven-central/v/org.biodatageeks/sequila_2.11
+    :alt: Maven Central
 
 .. |build| image:: https://gitlab.com/biodatageeks/pysequila/badges/master/pipeline.svg
     :alt: status
