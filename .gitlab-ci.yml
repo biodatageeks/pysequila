@@ -3,6 +3,9 @@ stages:
   - tox
   - build
   - publish
+  - doc-build
+  - page-build
+  - doc-page-serve
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
@@ -13,6 +16,10 @@ variables:
   DOCKER_VERSION: 19.03.12
   HELM_VERSION: 3.3.1
   JUPYTER_VERSION: 0.9.1
+  SPHINX_VERSION: 3.2.1
+  DOC_PORT_PREFIX: 11
+  HUGO_VERSION: 0.74.3-ubuntu
+  PIP_SNAPSHOT_REPO: https://zsibio.ii.pw.edu.pl/nexus/repository/bdg-pip/simple
 
 .python37Vars: &python37Vars
   PYTHON_VERSION: "3.7"
@@ -111,7 +118,6 @@ build-python37:
   <<: *build
   except: [ master ]
 
-
 .publish: &publish
   image: python:$PYTHON_VERSION
   cache:
@@ -145,3 +151,46 @@ publishReleasetpython37:
   except:
     - branches
   when: manual
+
+
+doc-build:
+  stage: doc-build
+  variables:
+    <<: *python37Vars
+  image:
+    name: python:$PYTHON_VERSION
+  before_script:
+    - source $VERSION_FILE
+    - pip install -U sphinx==$SPHINX_VERSION sphinx_rtd_theme rst2pdf sphinxcontrib-github_ribbon sphinxcontrib-bibtex pysequila==$VERSION --extra-index-url=$PIP_SNAPSHOT_REPO
+  script:
+    - cd docs && ./docs.sh html
+  artifacts:
+    paths:
+      - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/docs/build/
+  tags: [ docker ]
+  except: [ master]
+
+page-build:
+  stage: page-build
+  image:
+    name: klakegg/hugo:$HUGO_VERSION
+  before_script:
+    - source $VERSION_FILE
+  script:
+    - cd page && hugo
+  artifacts:
+    paths:
+      - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/page/docs/
+  tags: [ docker ]
+  except: [ master ]
+
+doc-page-serve:
+  stage: doc-page-serve
+  image:
+    name: docker:$DOCKER_VERSION
+  before_script:
+    - source $VERSION_FILE
+  script:
+    - ./build_docs.sh
+  tags: [ docker ]
+  except: [ master]
