@@ -1,6 +1,6 @@
 stages:
   - version
-  - tox
+#  - tox
   - build
   - publish
   - doc-build
@@ -18,7 +18,7 @@ variables:
   JUPYTER_VERSION: 0.9.1
   SPHINX_VERSION: 3.2.1
   DOC_PORT_PREFIX: 11
-  HUGO_VERSION: 0.74.3-ubuntu
+  HUGO_VERSION: 0.74.3
   PIP_SNAPSHOT_REPO: https://zsibio.ii.pw.edu.pl/nexus/repository/bdg-pip/simple
 
 .python37Vars: &python37Vars
@@ -75,41 +75,41 @@ version-tag:
   except:
     - branches
 
-tox:
-  variables:
-    <<: *python37Vars
-  stage: tox
-  image: python:$PYTHON_VERSION
-  cache:
-    key: $CI_PROJECT_PATH
-    paths:
-      - "/root/.cache/"
-  before_script:
-    - pip install -U -r requirements.txt
-  script:
-    - tox
-  artifacts:
-    paths:
-      - htmlcov/
-  tags: [ docker ]
-
-.build: &build
-  image: python:$PYTHON_VERSION
-  cache:
-    key: $CI_PROJECT_PATH
-    paths:
-      - "/root/.cache/"
-  before_script:
-    - source $VERSION_FILE
-    - pip install -U -r requirements.txt
-  script:
-    - python setup.py sdist bdist_wheel
-    - twine check dist/*
-  artifacts:
-    paths:
-      - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/dist/
-  tags: [ docker ]
-
+#tox:
+#  variables:
+#    <<: *python37Vars
+#  stage: tox
+#  image: python:$PYTHON_VERSION
+#  cache:
+#    key: $CI_PROJECT_PATH
+#    paths:
+#      - "/root/.cache/"
+#  before_script:
+#    - pip install -U -r requirements.txt
+#  script:
+#    - tox
+#  artifacts:
+#    paths:
+#      - htmlcov/
+#  tags: [ docker ]
+#
+#.build: &build
+#  image: python:$PYTHON_VERSION
+#  cache:
+#    key: $CI_PROJECT_PATH
+#    paths:
+#      - "/root/.cache/"
+#  before_script:
+#    - source $VERSION_FILE
+#    - pip install -U -r requirements.txt
+#  script:
+#    - python setup.py sdist bdist_wheel
+#    - twine check dist/*
+#  artifacts:
+#    paths:
+#      - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/dist/
+#  tags: [ docker ]
+#
 
 build-python37:
   stage: build
@@ -174,8 +174,10 @@ page-build:
   stage: page-build
   image:
     name: klakegg/hugo:$HUGO_VERSION
+    entrypoint: [""]
   before_script:
     - source $VERSION_FILE
+    - apk add --update --no-cache git
   script:
     - cd page && hugo
   artifacts:
