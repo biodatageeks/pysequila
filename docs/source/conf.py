@@ -36,6 +36,7 @@ project_name = u'|project_name|'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
+    'nbsphinx'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

@@ -1,6 +1,6 @@
 stages:
   - version
-#  - tox
+  #  - tox
   - build
   - publish
   - doc-build
@@ -18,8 +18,9 @@ variables:
   JUPYTER_VERSION: 0.9.1
   SPHINX_VERSION: 3.2.1
   DOC_PORT_PREFIX: 11
-  HUGO_VERSION: 0.74.3
+  HUGO_VERSION: 0.76.3-ext-ubuntu
   PIP_SNAPSHOT_REPO: https://zsibio.ii.pw.edu.pl/nexus/repository/bdg-pip/simple
+  PAGE_URL: pysequila.biodatageeks.org
 
 .python37Vars: &python37Vars
   PYTHON_VERSION: "3.7"
@@ -29,21 +30,11 @@ variables:
 
 .publishSnapshotVar: &publishSnapshotVar
   PYPI_REPO: "zsibio"
+  DOC_URL_PREFIX: "$PAGE_URL/snapshot"
 
 .publishReleaseVar: &publishReleaseVar
   PYPI_REPO: "pypi"
-
-.dev1Vars: &dev1Vars
-  CLUSTER_NAME: "dev1"
-  JUPYTER_PORT: 8881
-
-.dev2Vars: &dev2Vars
-  CLUSTER_NAME: "dev2"
-  JUPYTER_PORT: 8882
-
-.dev3Vars: &dev3Vars
-  CLUSTER_NAME: "dev3"
-  JUPYTER_PORT: 8883
+  DOC_URL_PREFIX: "$PAGE_URL"
 
 # --------------------------------- STAGE: version ---------------------------------------------------------------------
 version-branch:
@@ -92,24 +83,24 @@ version-tag:
 #    paths:
 #      - htmlcov/
 #  tags: [ docker ]
-#
-#.build: &build
-#  image: python:$PYTHON_VERSION
-#  cache:
-#    key: $CI_PROJECT_PATH
-#    paths:
-#      - "/root/.cache/"
-#  before_script:
-#    - source $VERSION_FILE
-#    - pip install -U -r requirements.txt
-#  script:
-#    - python setup.py sdist bdist_wheel
-#    - twine check dist/*
-#  artifacts:
-#    paths:
-#      - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/dist/
-#  tags: [ docker ]
-#
+
+.build: &build
+  image: python:$PYTHON_VERSION
+  cache:
+    key: $CI_PROJECT_PATH
+    paths:
+      - "/root/.cache/"
+  before_script:
+    - source $VERSION_FILE
+    - pip install -U -r requirements.txt
+  script:
+    - python setup.py sdist bdist_wheel
+    - twine check dist/*
+  artifacts:
+    paths:
+      - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/dist/
+  tags: [ docker ]
+
 
 build-python37:
   stage: build
@@ -161,7 +152,7 @@ doc-build:
     name: python:$PYTHON_VERSION
   before_script:
     - source $VERSION_FILE
-    - pip install -U sphinx==$SPHINX_VERSION sphinx_rtd_theme rst2pdf sphinxcontrib-github_ribbon sphinxcontrib-bibtex pysequila==$VERSION --extra-index-url=$PIP_SNAPSHOT_REPO
+    - pip install -U sphinx==$SPHINX_VERSION nbsphinx sphinx_rtd_theme rst2pdf sphinxcontrib-github_ribbon sphinxcontrib-bibtex pysequila==$VERSION --extra-index-url=$PIP_SNAPSHOT_REPO
   script:
     - cd docs && ./docs.sh html
   artifacts:
@@ -170,21 +161,37 @@ doc-build:
   tags: [ docker ]
   except: [ master]
 
-page-build:
+
+.page-build: &page-build
   stage: page-build
   image:
     name: klakegg/hugo:$HUGO_VERSION
     entrypoint: [""]
   before_script:
     - source $VERSION_FILE
-    - apk add --update --no-cache git
+    - apt update && apt-get install -y gettext
   script:
-    - cd page && hugo
+    - envsubst < page/config-template.toml > page/config.toml
+    - cd page && hugo --enableGitInfo=false
   artifacts:
     paths:
       - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/page/docs/
   tags: [ docker ]
-  except: [ master ]
+
+page-buildSnapshot:
+  variables:
+    <<: *publishSnapshotVar
+  <<: *page-build
+  except: [ master, tags ]
+
+page-buildRelease:
+  variables:
+    <<: *publishReleaseVar
+  <<: *page-build
+  only:
+    - tags
+  except:
+    - branches
 
 doc-page-serve:
   stage: doc-page-serve

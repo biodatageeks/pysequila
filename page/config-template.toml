@@ -1,4 +1,4 @@
-baseURL = "//biodatageeks.org/pysequila/"
+baseURL = "//$DOC_URL_PREFIX/"
 title = "pysequila"
 publishDir = "docs"
 
