@@ -11,3 +11,4 @@ dist/
 htmlcov
 *.pickle
 .idea/
+page/config.toml
