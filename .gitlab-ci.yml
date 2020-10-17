@@ -33,10 +33,12 @@ variables:
 .publishSnapshotVar: &publishSnapshotVar
   PYPI_REPO: "zsibio"
   DOC_URL_PREFIX: "$PAGE_URL/snapshot"
+  DOC_URL: "https://$PAGE_URL/doc/snapshot/"
 
 .publishReleaseVar: &publishReleaseVar
   PYPI_REPO: "pypi"
   DOC_URL_PREFIX: "$PAGE_URL"
+  DOC_URL: "https://$PAGE_URL/doc/"
 
 # --------------------------------- STAGE: version ---------------------------------------------------------------------
 version-branch:

@@ -82,6 +82,7 @@ time_format_blog = "02.01.2006"
 [params]
 copyright = "The Docsy Authors"
 privacy_policy = "https://policies.google.com/privacy"
+doc_url = "$DOC_URL"
 
 # First one is picked as the Twitter card image if not set on page.
 # images = ["images/project-illustration.png"]
@@ -186,4 +187,8 @@ enable = false
 	url = "https://example.org/mail"
 	icon = "fa fa-envelope"
         desc = "Discuss development issues around the project"
-
+[[menu.main]]
+    name = "Documentation"
+    weight = 20
+    identifier = "Documentation"
+    url = "$DOC_URL"

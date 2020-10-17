@@ -4,7 +4,7 @@ pysequila's documentation
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    notebooks/pysequila/doc/quick_start.ipynb
 
