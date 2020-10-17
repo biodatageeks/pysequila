@@ -6,8 +6,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   README
-   modules/index
+   notebooks/pysequila/doc/quick_start.ipynb
 
 .. ##### ToDo: Rewrite about documentation indexes. #####
 
