@@ -22,7 +22,7 @@ variables:
   PIP_SNAPSHOT_REPO: https://zsibio.ii.pw.edu.pl/nexus/repository/bdg-pip/simple
   PAGE_URL: pysequila.biodatageeks.org
   SEQUILA_VERSION: 0.5.16
-  PYSEQUILA_IMAGE_TAG: 0.1.3-ga5af501
+  PYSEQUILA_IMAGE_TAG: 0.1.4-g039f8d4
 
 .python37Vars: &python37Vars
   PYTHON_VERSION: "3.7"
