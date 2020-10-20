@@ -37,6 +37,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'nbsphinx',
+    'sphinxcontrib.bibtex',
     'sphinx_rtd_theme'
 ]
 
