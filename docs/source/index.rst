@@ -1,6 +1,14 @@
 pysequila's documentation
 =========================
 
+PySeQuiLa is a Python wrapper for SeQuiLa,
+an ANSI-SQL compliant solution for efficient sequencing reads processing
+and genomic intervals querying built on top of Apache Spark. Range joins,
+depth of coverage and pileup computations are bread and butter
+for NGS analysis but the high volume of data make them execute very slowly or even failing to compute.
+
+For any topics not covered here please refer to `SeQuiLa documentation <http://biodatageeks.org/sequila/>`_
+
 Contents:
 
 .. toctree::
@@ -21,9 +29,3 @@ Contents:
 .. toctree::
    :maxdepth: 1
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
