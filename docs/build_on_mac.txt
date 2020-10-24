@@ -1,0 +1,6 @@
+1. Install os deps
+brew install pandoc
+brew install pandoc-citeproc
+
+2. Install pip deps
+pip install -r ../requirements_dev.txt
