@@ -7,6 +7,7 @@ Contents:
    :maxdepth: 1
 
    notebooks/pysequila/doc/quick_start.ipynb
+   notebooks/pysequila/doc/initialize.ipynb
    notebooks/pysequila/doc/file_formats.ipynb
    notebooks/pysequila/doc/genomic_intervals.ipynb
    notebooks/pysequila/doc/coverage_analysis.ipynb
