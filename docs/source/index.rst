@@ -21,8 +21,6 @@ Contents:
 .. toctree::
    :maxdepth: 1
 
-   CHANGELOG
-
 Indices and tables
 ==================
 
