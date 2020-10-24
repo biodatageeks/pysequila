@@ -21,8 +21,8 @@ variables:
   HUGO_VERSION: 0.76.3-ext-ubuntu
   PIP_SNAPSHOT_REPO: https://zsibio.ii.pw.edu.pl/nexus/repository/bdg-pip/simple
   PAGE_URL: pysequila.biodatageeks.org
-  SEQUILA_VERSION: 0.5.16
-  PYSEQUILA_IMAGE_TAG: 0.1.4-g039f8d4
+  SEQUILA_VERSION: 0.5.17
+  PYSEQUILA_IMAGE_TAG: 0.1.4-g5c1569f
 
 .python37Vars: &python37Vars
   PYTHON_VERSION: "3.7"
