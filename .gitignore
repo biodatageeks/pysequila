@@ -11,3 +11,7 @@ dist/
 htmlcov
 *.pickle
 .idea/
+page/config.toml
+page/docs/*
+docs/source_v/*
+page/resources

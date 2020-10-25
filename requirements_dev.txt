@@ -1,0 +1,14 @@
+pyspark==2.4.3
+findspark
+setuptools
+wheel
+twine
+tox
+nbsphinx
+sphinx==3.2.1
+sphinx_rtd_theme
+rst2pdf
+sphinxcontrib-github_ribbon
+sphinxcontrib-bibtex
+pysequila==0.1.6
+pandoc
