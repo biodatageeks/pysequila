@@ -20,6 +20,7 @@ Contents:
    notebooks/pysequila/doc/genomic_intervals.ipynb
    notebooks/pysequila/doc/coverage_analysis.ipynb
    notebooks/pysequila/doc/pileup_analysis.ipynb
+   notebooks/pysequila/doc/other_functions.ipynb
    notebooks/pysequila/doc/kubernetes.ipynb
    benchmarking/benchmarking
    citation/citation
