@@ -19,6 +19,7 @@ variables:
   SPHINX_VERSION: 3.2.1
   DOC_PORT_PREFIX: 11
   HUGO_VERSION: 0.76.3-ext-ubuntu
+  HUGO_ENV="production"
   PIP_SNAPSHOT_REPO: https://zsibio.ii.pw.edu.pl/nexus/repository/bdg-pip/simple
   PAGE_URL: pysequila.biodatageeks.org
   SEQUILA_VERSION: 0.5.17
