@@ -38,7 +38,8 @@ extensions = [
     'sphinx.ext.viewcode',
     'nbsphinx',
     'sphinxcontrib.bibtex',
-    'sphinx_rtd_theme'
+    'sphinx_rtd_theme',
+    'sphinxcontrib.googleanalytics'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -71,3 +72,5 @@ html_static_path = ['_static']
 
 
 # -- Extension configuration -------------------------------------------------
+googleanalytics_id = 'UA-111293006-2'
+googleanalytics_enabled = 'true'
