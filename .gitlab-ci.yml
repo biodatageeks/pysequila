@@ -200,8 +200,7 @@ page-buildRelease:
   <<: *page-build
   only:
     - tags
-  except:
-    - branches
+    - master
 
 doc-serve:
   stage: doc-serve
