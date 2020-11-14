@@ -35,11 +35,19 @@ variables:
   PYPI_REPO: "zsibio"
   DOC_URL_PREFIX: "$PAGE_URL/snapshot"
   DOC_URL: "https://$PAGE_URL/doc/snapshot/"
+  VERSIONED: "true"
 
 .publishReleaseVar: &publishReleaseVar
   PYPI_REPO: "pypi"
   DOC_URL_PREFIX: "$PAGE_URL"
   DOC_URL: "https://$PAGE_URL/doc/"
+  VERSIONED: "true"
+
+.publishMasterVar: &publishMasterVar
+  PYPI_REPO: "pypi"
+  DOC_URL_PREFIX: "$PAGE_URL"
+  DOC_URL: "https://$PAGE_URL/doc/"
+  VERSIONED: "false"
 
 # --------------------------------- STAGE: version ---------------------------------------------------------------------
 version-branch:
@@ -178,7 +186,6 @@ doc-build:
     name: klakegg/hugo:$HUGO_VERSION
     entrypoint: [""]
   before_script:
-    - source $VERSION_FILE
     - apt update && apt-get install -y gettext
   script:
     - envsubst < page/config-template.toml > page/config.toml
@@ -200,6 +207,12 @@ page-buildRelease:
   <<: *page-build
   only:
     - tags
+
+page-buildMaster:
+  variables:
+    <<: *publishMasterVar
+  <<: *page-build
+  only:
     - master
 
 doc-serve:
