@@ -1,7 +1,7 @@
 #!/bin/sh
 
+: "${VERSION:=master}"
 echo $VERSION
-
 
 CONTAINER_SUFIX=$1
 PORT_SNAP=$2
