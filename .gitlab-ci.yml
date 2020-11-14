@@ -5,7 +5,8 @@ stages:
   - publish
   - doc-build
   - page-build
-  - doc-page-serve
+  - doc-serve
+  - page-serve
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
@@ -202,13 +203,25 @@ page-buildRelease:
   except:
     - branches
 
-doc-page-serve:
-  stage: doc-page-serve
+doc-serve:
+  stage: doc-serve
   image:
     name: docker:$DOCKER_VERSION
   before_script:
     - source $VERSION_FILE
   script:
-    - ./build_docs.sh
+    - cd /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/docs
+    - ../build_image.sh "doc" 81 80
   tags: [ docker ]
   except: [ master]
+
+page-serve:
+  stage: page-serve
+  image:
+    name: docker:$DOCKER_VERSION
+  before_script:
+    - source $VERSION_FILE
+  script:
+    - cd /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/page
+    - ../build_image.sh "page" 85 84
+  tags: [ docker ]
