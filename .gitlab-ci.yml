@@ -225,3 +225,14 @@ page-serve:
     - cd /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/page
     - ../build_image.sh "page" 85 84
   tags: [ docker ]
+  except: [ master]
+
+page-serve-master:
+  stage: page-serve
+  image:
+    name: docker:$DOCKER_VERSION
+  script:
+    - cd /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/page
+    - ../build_image.sh "page" 85 84
+  tags: [ docker ]
+  only: [ master ]
