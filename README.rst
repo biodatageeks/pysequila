@@ -1,4 +1,4 @@
-|version| |version_sequila| |build| |python| |license| |coverage| |contributors| |last_commit|
+|version| |downloads| |version_sequila| |build| |python| |license| |coverage| |contributors| |last_commit|
 
 .. |version| image:: https://badge.fury.io/py/pysequila.svg
     :target: https://badge.fury.io/py/pysequila
@@ -23,6 +23,10 @@
 
 .. |last_commit| image:: https://img.shields.io/github/commit-activity/m/biodatageeks/pysequila
     :alt: GitHub commit activity
+
+.. |downloads| image:: https://pepy.tech/badge/pysequila
+    :alt: PyPI downloads
+
 
 ===========
  pysequila
