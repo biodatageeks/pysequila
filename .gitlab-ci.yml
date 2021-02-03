@@ -23,7 +23,7 @@ variables:
   HUGO_ENV: production
   PIP_SNAPSHOT_REPO: https://zsibio.ii.pw.edu.pl/nexus/repository/bdg-pip/simple
   PAGE_URL: pysequila.biodatageeks.org
-  SEQUILA_VERSION: 0.6.0
+  SEQUILA_VERSION: 0.6.4
   SPARK_IMAGE: biodatageeks/ds-notebook:spark-pysequila-3.0.1-0.1.8-g5db832d
   SCALA_VERSION: "2.12"
   VENV_NAME: pysequila
