@@ -28,7 +28,6 @@ variables:
   SCALA_VERSION: "2.12"
   VENV_NAME: pysequila
 
-
 .python37Vars: &python37Vars
   PYTHON_VERSION: "3.7"
 
