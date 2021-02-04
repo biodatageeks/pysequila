@@ -50,7 +50,7 @@ long_description = (
     read_content("README.rst") +
     read_content(os.path.join("docs/source", "CHANGELOG.rst")))
 
-requires = ['setuptools', 'typeguard==2.5.0', 'pyspark==2.4.3', 'findspark']
+requires = ['setuptools', 'typeguard==2.5.0', 'pyspark==3.0.1', 'findspark']
 
 extras_require = {
     'reST': ['Sphinx'],
