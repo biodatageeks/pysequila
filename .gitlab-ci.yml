@@ -135,7 +135,7 @@ build-python37:
     - source $VERSION_FILE
     - pip install -U -r requirements.txt
   script:
-    - twine upload --repository=$PYPI_REPO dist/* --config-file=/root/pypi/.pypirc
+    - export CURL_CA_BUNDLE="" && twine upload --repository=$PYPI_REPO dist/* --config-file=/root/pypi/.pypirc
   tags: [ docker ]
 
 
