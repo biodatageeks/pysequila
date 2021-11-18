@@ -69,6 +69,6 @@ html_theme = 'sphinx_rtd_theme'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-
+nbsphinx_allow_errors = True
 # -- Extension configuration -------------------------------------------------
 
