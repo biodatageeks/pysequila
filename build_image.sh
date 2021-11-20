@@ -15,3 +15,4 @@ else
     if [ $(docker ps | grep $CI_PROJECT_NAME-$CONTAINER_SUFIX | wc -l) -gt 0 ]; then docker stop $CI_PROJECT_NAME-$CONTAINER_SUFIX && docker rm $CI_PROJECT_NAME-$CONTAINER_SUFIX; fi
     docker run --restart unless-stopped -d -p ${DOC_PORT_PREFIX}$PORT_PROD:80 --name $CI_PROJECT_NAME-$CONTAINER_SUFIX biodatageeks/$CI_PROJECT_NAME-$CONTAINER_SUFIX
 fi
+
