@@ -1,23 +1,6 @@
 """Entrypoint to Sequila - tool for large-scale genomics on Spark."""
 from pyspark.sql import SparkSession
 from pyspark.sql.context import SQLContext
-from typeguard import check_argument_types
-
-
-def register(session: SparkSession):
-    """
-    Register SQL extensions for a Spark session.
-
-    :param session: Spark session
-    """
-    assert check_argument_types()
-    # pylint: disable=W0212
-    spark_session = session._jvm.org.apache.spark.sql.SparkSession.builder().enableHiveSupport().getOrCreate()
-
-    seq_session = session._jvm.org.apache.spark.sql.SequilaSession(spark_session)
-
-    session._jvm.org.biodatageeks.sequila.utils.SequilaRegister.register(seq_session)
-    session._jvm.org.biodatageeks.sequila.utils.UDFRegister.register(seq_session)
 
 
 class SequilaSession(SparkSession):  # pylint: disable=too-few-public-methods
