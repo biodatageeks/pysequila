@@ -24,7 +24,7 @@ variables:
   PIP_SNAPSHOT_REPO: https://zsibio.ii.pw.edu.pl/nexus/repository/bdg-pip/simple
   PAGE_URL: pysequila.biodatageeks.org
   SEQUILA_VERSION: 0.7.0
-  SPARK_IMAGE: biodatageeks/ds-notebook:spark-pysequila-3.0.1-0.1.8-g5db832d
+  SPARK_IMAGE: biodatageeks/ds-notebook:spark-pysequila-3.1.2-0.1.11-gc575ad1
   SCALA_VERSION: "2.12"
   VENV_NAME: pysequila
 
