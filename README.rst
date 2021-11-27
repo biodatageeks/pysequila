@@ -38,7 +38,7 @@ pysequila is Python entrypoint to SeQuiLa, an ANSI-SQL compliant solution for ef
 Requirements
 ============
 
-* Python 3.7
+* Python 3.7, 3.8
 
 Features
 ========
@@ -48,7 +48,8 @@ Features
 * pileup calculations
 * reads filtering
 * efficient range joins
-* other utility functions 
+* other utility functions
+* support for both SQL and Dataframe/Dataset API
 
 Setup
 =====
@@ -68,9 +69,8 @@ Usage
   >>> from pyspark.sql import SparkSession
   >>> spark = SparkSession \
       .builder \
-      .appName(f'{app_name}') \
       .getOrCreate()
-  >>> from sequila import SequilaSession
+  >>> from pysequila import SequilaSession
   >>> ss = SequilaSession(spark)
   >>> ss.sql ("SELECT * FROM  coverage('reads', 'NA12878'")
   >>>
