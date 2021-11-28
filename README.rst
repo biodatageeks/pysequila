@@ -69,7 +69,6 @@ Usage
   >>> from pysequila import SequilaSession
   >>> ss = SequilaSession \
     .builder \
-    .config("spark.jars.packages", "org.biodatageeks:sequila_2.12:0.7.3") \
     .config("spark.driver.memory", "2g") \
     .getOrCreate()
   >>> ss.sql ("SELECT * FROM  coverage('reads', 'NA12878'")

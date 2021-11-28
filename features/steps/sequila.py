@@ -11,7 +11,6 @@ def step_sequila_session(context):
     context.sequila = (
         SequilaSession.builder.master("local[1]")
         .appName("SeQuiLa")
-        .config("spark.jars.packages", f"org.biodatageeks:sequila_2.12:{os.getenv('SEQUILA_VERSION','0.7.3')}")
         .config("spark.driver.memory", "2g")
         .config("spark.driver.maxResultSize", "1g")
         .getOrCreate()
