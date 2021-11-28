@@ -1,4 +1,7 @@
+# pylint: disable=protected-access,too-few-public-methods
 """Entrypoint to Sequila - tool for large-scale genomics on Spark."""
+from pyspark.conf import SparkConf
+from pyspark.context import SparkContext
 from pyspark.sql import SparkSession
 from pyspark.sql.context import SQLContext
 from pyspark.sql.dataframe import DataFrame
@@ -7,9 +10,38 @@ from pyspark.sql.dataframe import DataFrame
 class SequilaSession(SparkSession):
     """Wrapper for SparkSession."""
 
+    class Builder(SparkSession.Builder):
+        """Builder for :class:`SequilaSession`."""
+
+        _sc = None
+
+        def getOrCreate(self):
+            """Get an existing :class:`SequilaSession`.
+
+            This is to override add SequilaSession wrapper around SparkSession.
+            """
+            with self._lock:
+                session = SparkSession._instantiatedSession
+                if session is None or session._sc._jsc is None:
+                    if self._sc is not None:
+                        sc = self._sc
+                    else:
+                        sparkConf = SparkConf()
+                        for key, value in self._options.items():
+                            sparkConf.set(key, value)
+                        # This SparkContext may be an existing one.
+                        sc = SparkContext.getOrCreate(sparkConf)
+                    # Do not update `SparkConf` for existing `SparkContext`, as it's shared
+                    # by all sessions.
+                    session = SparkSession(sc)
+                for key, value in self._options.items():
+                    session._jsparkSession.sessionState().conf().setConfString(key, value)
+                return SequilaSession(session)
+
+    builder = Builder()
+
     def __init__(self, session: SparkSession, jsparkSession=None):
         """Create a new SequilaSession."""
-        SparkSession.__init__(self, session.sparkContext)
         seq_session = session._jvm.org.apache.spark.sql.SequilaSession(session._jsparkSession)  # pylint: disable=W0212
 
         session._jvm.org.apache.spark.sql.SequilaSession.register(seq_session)
