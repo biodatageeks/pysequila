@@ -11,10 +11,11 @@ def step_sequila_session(context):
     context.sequila = (
         SequilaSession.builder.master("local[1]")
         .appName("SeQuiLa")
-        .config("spark.driver.memory", "2g")
+        .config("spark.driver.memory", "4g")
         .config("spark.driver.maxResultSize", "1g")
         .getOrCreate()
     )
+    context.sequila.sparkContext.setLogLevel("ERROR")
 
 
 @given("create alignment tables")
@@ -32,5 +33,3 @@ def step_create_tables(context):
         OPTIONS(path "{context.bam_file}")
         """
     )
-
-    print(context.sequila.sql(f"DESCRIBE FORMATTED {context.bam_table_name}"))

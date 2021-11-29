@@ -7,5 +7,10 @@ Feature: Basic PySeQuiLa coverage tests SQL/API
 
   Scenario: Count of coverage output
     Given a sequila session
-      And I compute coverage
+    And I compute coverage using SQL API
+    Then row count is "12836"
+
+  Scenario: Count of coverage output
+    Given a sequila session
+      And I compute coverage using DataFrame API
     Then row count is "12836"

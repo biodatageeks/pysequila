@@ -37,6 +37,7 @@ class SequilaSession(SparkSession):
                     # Do not update `SparkConf` for existing `SparkContext`, as it's shared
                     # by all sessions.
                     session = SparkSession(sc)
+                    sc.setLogLevel("ERROR")
                 for key, value in self._options.items():
                     session._jsparkSession.sessionState().conf().setConfString(key, value)
                 return SequilaSession(session)
