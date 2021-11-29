@@ -6,7 +6,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.context import SQLContext
 from pyspark.sql.dataframe import DataFrame
 
-SEQUILA_PACKAGE_VERSION = "org.biodatageeks:sequila_2.12:0.7.3"
+SEQUILA_PACKAGE_VERSION = "org.biodatageeks:sequila_2.12:0.7.4"
 
 
 class SequilaSession(SparkSession):
@@ -30,6 +30,13 @@ class SequilaSession(SparkSession):
                     else:
                         sparkConf = SparkConf()
                         sparkConf.set("spark.jars.packages", SEQUILA_PACKAGE_VERSION)
+                        sparkConf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+                        sparkConf.set(
+                            "spark.kryo.registrator", "org.biodatageeks.sequila.pileup.serializers.CustomKryoRegistrator"
+                        )
+                        sparkConf.set("spark.driver.maxResultSize", "1g")
+                        sparkConf.set("spark.hadoop.mapreduce.input.fileinputformat.split.minsize", "134217728")
+                        sparkConf.set("spark.biodatageeks.pileup.useVectorizedOrcWriter", "true")
                         for key, value in self._options.items():
                             sparkConf.set(key, value)
                         # This SparkContext may be an existing one.

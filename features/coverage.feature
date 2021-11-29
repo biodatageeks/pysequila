@@ -5,12 +5,12 @@ Feature: Basic PySeQuiLa coverage tests SQL/API
     Given a sequila session
     And create alignment tables
 
-  Scenario: Count of coverage output
+  Scenario: Count of coverage output with SQL
     Given a sequila session
     And I compute coverage using SQL API
     Then row count is "12836"
 
-  Scenario: Count of coverage output
+  Scenario: Count of coverage output with DataFrame
     Given a sequila session
       And I compute coverage using DataFrame API
     Then row count is "12836"
