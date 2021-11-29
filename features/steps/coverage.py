@@ -1,6 +1,6 @@
 # pylint: disable=missing-function-docstring,missing-module-docstring,wildcard-import,undefined-variable,function-redefined,no-else-return
 
-from behave import given, then
+from behave import given
 
 
 @given("I compute coverage using SQL API")
@@ -10,11 +10,6 @@ def run_coverage_sql(context):
         SELECT * FROM coverage('{context.bam_table_name}', '{context.sample_id}', '{context.ref_file}')
     """
     ).collect()
-
-
-@then('row count is "{row_count}"')
-def compare_row_count(contex, row_count):
-    assert len(contex.result) == int(row_count)
 
 
 @given("I compute coverage using DataFrame API")
