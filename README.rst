@@ -9,8 +9,8 @@
 .. |build| image:: https://gitlab.com/biodatageeks/pysequila/badges/master/pipeline.svg
     :alt: status
 
-.. |python| image:: https://img.shields.io/badge/python-3.7-blue.svg
-    :alt: Python-3.7
+.. |python| image:: https://img.shields.io/badge/python-3.8-blue.svg
+    :alt: Python-3.8
 
 .. |license| image:: https://img.shields.io/badge/license-Apache%202.0-blue.svg
     :alt: license
@@ -69,7 +69,6 @@ Usage
   >>> from pysequila import SequilaSession
   >>> ss = SequilaSession \
     .builder \
-    .config("spark.jars.packages", "org.biodatageeks:sequila_2.12:0.7.3") \
     .config("spark.driver.memory", "2g") \
     .getOrCreate()
   >>> ss.sql ("SELECT * FROM  coverage('reads', 'NA12878'")

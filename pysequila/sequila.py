@@ -6,6 +6,8 @@ from pyspark.sql import SparkSession
 from pyspark.sql.context import SQLContext
 from pyspark.sql.dataframe import DataFrame
 
+SEQUILA_PACKAGE_VERSION = "org.biodatageeks:sequila_2.12:0.7.3"
+
 
 class SequilaSession(SparkSession):
     """Wrapper for SparkSession."""
@@ -27,6 +29,7 @@ class SequilaSession(SparkSession):
                         sc = self._sc
                     else:
                         sparkConf = SparkConf()
+                        sparkConf.set("spark.jars.packages", SEQUILA_PACKAGE_VERSION)
                         for key, value in self._options.items():
                             sparkConf.set(key, value)
                         # This SparkContext may be an existing one.
@@ -34,6 +37,7 @@ class SequilaSession(SparkSession):
                     # Do not update `SparkConf` for existing `SparkContext`, as it's shared
                     # by all sessions.
                     session = SparkSession(sc)
+                    sc.setLogLevel("ERROR")
                 for key, value in self._options.items():
                     session._jsparkSession.sessionState().conf().setConfString(key, value)
                 return SequilaSession(session)

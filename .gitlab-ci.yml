@@ -115,20 +115,15 @@ behave-test:
     - conda activate /tmp/jovyan/venv/$VENV_NAME/
     - source "/tmp/jovyan/.sdkman/bin/sdkman-init.sh"
     - pip install -U -e .
-    - pip install behave==1.2.6 inflect==5.3.0
+    - pip install behave==1.2.6 inflect==5.3.0 coverage
     - export PYSPARK_SUBMIT_ARGS="--packages org.biodatageeks:sequila_${SCALA_VERSION}:${SEQUILA_VERSION} --driver-memory 4g pyspark-shell"
   script:
-    - behave
+    - coverage run $(which behave)
+    - coverage report
   artifacts:
     paths:
       - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/docs/build/
   tags: [ docker ]
-  except: [ master]
-
-
-
-
-
 
 .build: &build
   image: python:$PYTHON_VERSION
@@ -190,7 +185,7 @@ publishReleasetpython37:
   when: manual
 
 
-doc-build:
+.doc-build: &doc-build
   stage: doc-build
   variables:
     <<: *python37Vars
@@ -210,7 +205,7 @@ doc-build:
     paths:
       - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/docs/build/
   tags: [ docker ]
-  except: [ master]
+
 
 
 .page-build: &page-build
@@ -227,6 +222,18 @@ doc-build:
     paths:
       - /builds/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME/page/docs/
   tags: [ docker ]
+
+doc-buildSnapshot:
+  <<: *doc-build
+  except: [ master, tags ]
+
+doc-buildRelease:
+  <<: *doc-build
+  needs:
+    - publishReleasetpython37
+  only:
+    - tags
+
 
 page-buildSnapshot:
   variables:
