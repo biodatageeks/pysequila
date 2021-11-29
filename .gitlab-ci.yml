@@ -110,7 +110,6 @@ behave-test:
     name: $SPARK_IMAGE
     entrypoint: [""]
   before_script:
-    - source $VERSION_FILE
     - source /opt/conda/etc/profile.d/conda.sh
     - conda activate /tmp/jovyan/venv/$VENV_NAME/
     - source "/tmp/jovyan/.sdkman/bin/sdkman-init.sh"
