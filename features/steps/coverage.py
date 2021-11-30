@@ -9,9 +9,9 @@ def run_coverage_sql(context):
         f"""
         SELECT * FROM coverage('{context.bam_table_name}', '{context.sample_id}', '{context.ref_file}')
     """
-    ).collect()
+    )
 
 
 @given("I compute coverage using DataFrame API")
 def run_coverage_dataframe(context):
-    context.result = context.sequila.coverage(context.bam_file, context.ref_file).collect()
+    context.result = context.sequila.coverage(context.bam_file, context.ref_file)

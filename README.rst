@@ -71,6 +71,13 @@ Usage
     .builder \
     .config("spark.driver.memory", "2g") \
     .getOrCreate()
-  >>> ss.sql ("SELECT * FROM  coverage('reads', 'NA12878'")
-  >>>
+  >>> ss.sql(
+        f"""
+        CREATE TABLE IF NOT EXISTS reads
+        USING org.biodatageeks.sequila.datasources.BAM.BAMDataSource
+        OPTIONS(path "/features/data/NA12878.multichrom.md.bam")
+        """
+  >>> ss.sql ("SELECT * FROM  coverage('reads', 'NA12878','/features/data/Homo_sapiens_assembly18_chr1_chrM.small.fasta")
+  >>> # or using DataFrame/DataSet API
+  >>> ss.coverage("/features/data/NA12878.multichrom.md.bam", "/features/data/Homo_sapiens_assembly18_chr1_chrM.small.fasta")
 

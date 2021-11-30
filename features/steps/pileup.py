@@ -9,9 +9,9 @@ def run_pileup_sql(context):
         f"""
         SELECT * FROM pileup('{context.bam_table_name}', '{context.sample_id}', '{context.ref_file}', true, true)
     """
-    ).collect()
+    )
 
 
 @given("I compute pileup with quals using DataFrame API")
 def run_pileup_dataframe(context):
-    context.result = context.sequila.pileup(context.bam_file, context.ref_file, True).collect()
+    context.result = context.sequila.pileup(context.bam_file, context.ref_file, True)

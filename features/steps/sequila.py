@@ -5,6 +5,8 @@ from behave import *
 
 from pysequila import SequilaSession
 
+root_dir = os.getenv("PWD")
+
 
 @given("a sequila session")
 def step_sequila_session(context):
@@ -20,7 +22,6 @@ def step_sequila_session(context):
 
 @given("create alignment tables")
 def step_create_tables(context):
-    root_dir = os.getenv("PWD")
     context.sample_id = "NA12878.multichrom.md"
     context.bam_table_name = "reads_bam"
     context.bam_file = f"{root_dir}/features/data/NA12878.multichrom.md.bam"
@@ -31,5 +32,18 @@ def step_create_tables(context):
         CREATE TABLE IF NOT EXISTS {context.bam_table_name} 
         USING org.biodatageeks.sequila.datasources.BAM.BAMDataSource
         OPTIONS(path "{context.bam_file}")
+        """
+    )
+
+
+@given("create target table")
+def step_create_target_table(context):
+    context.target_table_name = "targets"
+    context.target_file = f"{root_dir}/features/data/targets.bed"
+    context.sequila.sql(
+        f"""
+        CREATE TABLE IF NOT EXISTS {context.target_table_name} 
+        USING org.biodatageeks.sequila.datasources.BED.BEDDataSource
+        OPTIONS(path "{context.target_file}")
         """
     )
