@@ -181,7 +181,6 @@ publishReleasetpython37:
     - tags
   except:
     - branches
-  when: manual
 
 
 .doc-build: &doc-build
