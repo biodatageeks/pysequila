@@ -6,8 +6,6 @@ from pyspark.sql import SparkSession
 from pyspark.sql.context import SQLContext
 from pyspark.sql.dataframe import DataFrame
 
-SEQUILA_PACKAGE_VERSION = "org.biodatageeks:sequila_2.12:0.7.4"
-
 
 class SequilaSession(SparkSession):
     """Wrapper for SparkSession."""
@@ -29,7 +27,6 @@ class SequilaSession(SparkSession):
                         sc = self._sc
                     else:
                         sparkConf = SparkConf()
-                        sparkConf.set("spark.jars.packages", SEQUILA_PACKAGE_VERSION)
                         sparkConf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
                         sparkConf.set(
                             "spark.kryo.registrator", "org.biodatageeks.sequila.pileup.serializers.CustomKryoRegistrator"
