@@ -32,7 +32,7 @@
  pysequila
 ===========
 
-pysequila is Python entrypoint to SeQuiLa, an ANSI-SQL compliant solution for efficient sequencing reads processing and genomic intervals querying built on top of Apache Spark. Range joins, depth of coverage and pileup computations are bread and butter for NGS analysis but the high volume of data make them execute very slowly or even failing to compute.
+pysequila is a Python entrypoint to SeQuiLa, an ANSI-SQL compliant solution for efficient sequencing reads processing and genomic intervals querying built on top of Apache Spark. Range joins, depth of coverage and pileup computations are bread and butter for NGS analysis but the high volume of data make them execute very slowly or even failing to compute.
 
 
 Requirements
@@ -69,7 +69,7 @@ Usage
   >>> from pysequila import SequilaSession
   >>> ss = SequilaSession \
     .builder \
-    .config("spark.jars.packages", "org.biodatageeks:sequila_2.12:0.7.5") \
+    .config("spark.jars.packages", "org.biodatageeks:sequila_2.12:1.0.0") \
     .config("spark.driver.memory", "2g") \
     .getOrCreate()
   >>> ss.sql(
