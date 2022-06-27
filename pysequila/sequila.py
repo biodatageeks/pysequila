@@ -132,3 +132,30 @@ class SequilaSession(SparkSession):
         """
         jdf = self._jsparkSession.pileup(path, refPath, qual)
         return DataFrame(jdf, self._wrapped)
+
+    def feature_counts(self, reads: str, genes: str) -> DataFrame:
+        """
+        Create a :class:`DataFrame` with genes counted in reads bam file
+
+        Parameters
+        ----------
+        reads : str
+            the alignment file in BAM format
+        genes : str
+           genes in BED format
+        Returns
+        -------
+        :class:`DataFrame`
+        Examples
+        --------
+        >>> ss.feature_counts(reads, genes).show(1)
+        +---------+------+---------+-------+------+------+--------+
+        |sample_id|contig|pos_start|pos_end|strand|Length|countRef|
+        +---------+------+---------+-------+------+------+--------+
+        |        1|  chr1|       11|     99|     +|    88|       7|
+        +---------+------+---------+-------+------+------+--------+
+        only showing top 1 row
+
+        """
+        jdf = self._jsparkSession.featureCounts(reads, genes)
+        return DataFrame(jdf, self._wrapped)
