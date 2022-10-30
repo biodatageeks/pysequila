@@ -22,7 +22,8 @@ variables:
   DOC_PORT_PREFIX: 11
   HUGO_VERSION: 0.76.3-ext-ubuntu
   HUGO_ENV: production
-  PIP_SNAPSHOT_REPO: https://zsibio.ii.pw.edu.pl/nexus/repository/bdg-pip/simple
+  NEXUS_HOST: zsibio.ii.pw.edu.pl
+  PIP_SNAPSHOT_REPO: http://${NEXUS_HOST}/nexus/repository/bdg-pip/simple
   PAGE_URL: pysequila.biodatageeks.org
   SEQUILA_VERSION: 0.7.5
   SPARK_IMAGE: biodatageeks/ds-notebook:spark-pysequila-3.1.2-0.1.11-gc575ad1
@@ -159,7 +160,7 @@ build-python37:
     - source $VERSION_FILE
     - pip install -U -r requirements.txt
   script:
-    - twine upload --repository=$PYPI_REPO dist/* --config-file=/root/pypi/.pypirc
+    - twine upload --repository=$PYPI_REPO dist/* --config-file=/root/pypi/.pypirc  --trusted-host $NEXUS_HOST
   tags: [ docker ]
 
 
@@ -195,7 +196,7 @@ publishReleasetpython37:
     - source /opt/conda/etc/profile.d/conda.sh
     - conda activate /tmp/jovyan/venv/$VENV_NAME/
     - source "/tmp/jovyan/.sdkman/bin/sdkman-init.sh"
-    - pip install -U sphinx==$SPHINX_VERSION nbsphinx sphinx_rtd_theme rst2pdf sphinxcontrib-github_ribbon "sphinxcontrib-bibtex<2.0.0" pysequila==$VERSION --extra-index-url=$PIP_SNAPSHOT_REPO
+    - pip install -U sphinx==$SPHINX_VERSION nbsphinx sphinx_rtd_theme rst2pdf sphinxcontrib-github_ribbon "sphinxcontrib-bibtex<2.0.0" pysequila==$VERSION --extra-index-url=$PIP_SNAPSHOT_REPO  --trusted-host $NEXUS_HOST
     - export PYSPARK_SUBMIT_ARGS="--packages org.biodatageeks:sequila_${SCALA_VERSION}:${SEQUILA_VERSION} --driver-memory 4g pyspark-shell"
   script:
     - cd docs && ./docs.sh html

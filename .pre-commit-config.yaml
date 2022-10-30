@@ -8,7 +8,7 @@ repos:
           - "--disable=C0103,E0401,R0801"
           - "--max-line-length=128"
   - repo: https://github.com/psf/black
-    rev: 20.8b1
+    rev: 22.3.0
     hooks:
       - id: black
         args:
