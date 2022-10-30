@@ -21,11 +21,11 @@ project = "pysequila"
 copyright = "2020, biodatageeks"
 author = "biodatageeks"
 
-version = u"|version|"
+version = "|version|"
 # The full version, including alpha/beta/rc tags
-release = u"|version|"
+release = "|version|"
 
-project_name = u"|project_name|"
+project_name = "|project_name|"
 
 
 # -- General configuration ---------------------------------------------------
@@ -63,5 +63,6 @@ html_theme = "sphinx_rtd_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 
+bibtex_bibfiles = ["citation/ref.bib"]
 
 # -- Extension configuration -------------------------------------------------
