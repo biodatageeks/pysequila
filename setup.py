@@ -38,12 +38,13 @@ def read_content(filepath):
 
 
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
@@ -67,7 +68,7 @@ setup(
     long_description_content_type="text/x-rst",
     author="biodatageeks",
     author_email="team@biodatageeks.org",
-    url="https://pysequila.biodatageeks.org",
+    url="https://biodatageeks.github.io/sequila/",
     classifiers=classifiers,
     packages=["pysequila"],
     data_files=[],

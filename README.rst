@@ -38,7 +38,7 @@ pysequila is a Python entrypoint to SeQuiLa, an ANSI-SQL compliant solution for 
 Requirements
 ============
 
-* Python 3.7, 3.8
+* Python 3.7, 3.8, 3.9
 
 Features
 ========
