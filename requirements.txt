@@ -1,4 +1,4 @@
-pyspark==3.1.2
+pyspark==3.2.2
 findspark
 setuptools
 wheel
