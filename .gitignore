@@ -1,6 +1,7 @@
 *.egg
 *.egg/
 *.egg-info/
+.eggs/
 *.pyc
 .tox/
 _build/
@@ -16,3 +17,4 @@ page/docs/*
 docs/source_v/*
 page/resources
 .DS_Store
+.venv/

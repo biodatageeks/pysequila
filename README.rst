@@ -51,7 +51,17 @@ Features
 * other utility functions
 * support for both SQL and Dataframe/Dataset API
 
-Setup
+Building
+=====
+
+::
+
+  $ python3.9 -m venv .venv
+  $ source .venv/bin/activate
+  $ pip install -r requirements.txt
+  $ python setup.py sdist bdist_wheel
+
+Install
 =====
 
 ::
@@ -66,19 +76,20 @@ Usage
 ::
 
   $ python
+  >>> import os
   >>> from pysequila import SequilaSession
+  >>> curr_dir = os.getcwd()
   >>> ss = SequilaSession \
     .builder \
-    .config("spark.jars.packages", "org.biodatageeks:sequila_2.12:1.1.0") \
+    .config("spark.jars.packages", "org.biodatageeks:sequila_2.12:1.3.6") \
     .config("spark.driver.memory", "2g") \
     .getOrCreate()
-  >>> ss.sql(
-        f"""
+  >>> ss.sql(f"""
         CREATE TABLE IF NOT EXISTS reads
         USING org.biodatageeks.sequila.datasources.BAM.BAMDataSource
-        OPTIONS(path "/features/data/NA12878.multichrom.md.bam")
-        """
-  >>> ss.sql ("SELECT * FROM  coverage('reads', 'NA12878','/features/data/Homo_sapiens_assembly18_chr1_chrM.small.fasta")
+        OPTIONS(path "{curr_dir}/features/data/NA12878.multichrom.md.bam")
+        """)
+  >>> df = ss.sql (f"SELECT * FROM  coverage('reads', 'NA12878','{curr_dir}/features/data/Homo_sapiens_assembly18_chr1_chrM.small.fasta')")
   >>> # or using DataFrame/DataSet API
-  >>> ss.coverage("/features/data/NA12878.multichrom.md.bam", "/features/data/Homo_sapiens_assembly18_chr1_chrM.small.fasta")
+  >>> df = ss.coverage(f"{curr_dir}/features/data/NA12878.multichrom.md.bam", "{curr_dir}/features/data/Homo_sapiens_assembly18_chr1_chrM.small.fasta")
 

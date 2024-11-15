@@ -49,10 +49,14 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
 
-
 long_description = read_content("README.rst") + read_content(os.path.join("docs/source", "CHANGELOG.rst"))
 
-requires = ["setuptools", "typeguard==2.9.1", "pyspark==3.2.2", "findspark", "pandas"]
+requires = [
+  "typeguard==2.9.1",
+  "pyspark==3.2.2",
+  "findspark==2.0.1",
+  "pandas==2.2.3"
+]
 
 extras_require = {
     "reST": ["Sphinx"],
@@ -62,7 +66,7 @@ if os.environ.get("READTHEDOCS", None):
 
 setup(
     name="pysequila",
-    version=os.getenv("VERSION", "0.1.0"),
+    version=os.getenv("VERSION", "0.4.1"),
     description="An SQL-based solution for large-scale genomic analysis",
     long_description=long_description,
     long_description_content_type="text/x-rst",
